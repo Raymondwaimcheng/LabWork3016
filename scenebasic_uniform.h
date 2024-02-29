@@ -12,15 +12,19 @@
 #include "glm/glm.hpp"
 #include "helper/plane.h"
 #include "helper/objmesh.h"
+#include "helper/cube.h"
 
 
 class SceneBasic_Uniform : public Scene
 {
 private:
     //Torus torus;
-    Plane plane;
-    Teapot teapot;
-    //std::unique_ptr<ObjMesh> mesh;
+    //Plane plane;
+    //Teapot teapot;
+    //Cube cube;
+    float rotSpeed;
+    //GLuint brick, moss;
+    std::unique_ptr<ObjMesh> ogre;
     float tPrev;
     float angle;
     GLSLProgram prog;
