@@ -28,11 +28,12 @@ using glm::mat4;
 SceneBasic_Uniform::SceneBasic_Uniform() :
     tPrev(0),
     angle(0.0f),
-    rotSpeed(glm::pi<float>()/ 8.0f)
+    rotSpeed(glm::pi<float>()/ 8.0f),
     //plane(50.0f, 50.0f, 1, 1),
-    //teapot(14, glm::mat4(1.0f))
+    teapot(14, glm::mat4(1.0f))
+  
+    //torus(1.75f * 0.75f, 1.75f * 0.75f, 50, 50) 
     {
-    //torus(1.75f * 0.75f, 1.75f * 0.75f, 50, 50) {
     ogre = ObjMesh::load("media/bs_ears.obj", false, true);
 }
 
@@ -41,7 +42,7 @@ void SceneBasic_Uniform::initScene()
     compile();
     glEnable(GL_DEPTH_TEST);
     model = mat4(1.0f);
-    //view = glm::lookAt(vec3(1.0f, 1.25f, 1.25f), vec3(0.0f, 0.2f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+    view = glm::lookAt(vec3(1.0f, 1.25f, 1.25f), vec3(0.0f, 0.2f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
     //rotation
     //model = glm::rotate(model, glm::radians(-35.0f), vec3(1.0f, 0.0f, 0.0f));
     //model = glm::rotate(model, glm::radians(15.0f), vec3(0.0f, 1.0f, 0.0f));
@@ -75,7 +76,7 @@ void SceneBasic_Uniform::initScene()
     glBindTexture(GL_TEXTURE_2D, normalTex);
 
     //Fog
-    prog.setUniform("Fog.MaxDist", 20.f);
+    prog.setUniform("Fog.MaxDist", 10.0f);
     prog.setUniform("Fog.MinDist", 1.0f);
     prog.setUniform("Fog.Color", vec3(0.5f, 0.5f, 0.5f));
 
@@ -178,7 +179,7 @@ void SceneBasic_Uniform::render()
     //Spin
     //vec3 cameraPos = vec3(-1.0f * cos(angle), 0.0f, 2.0f * sin(angle));
     //Normal
-    vec3 cameraPos = vec3(-1.0f, 0.25f, 2.0f);
+    vec3 cameraPos = vec3(0.0f, 0.25f, 2.0f);
     view = glm::lookAt(cameraPos, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
     prog.setUniform("Light.Position", view * glm::vec4(10.0f * cos(angle), 
         1.0f, 10.0f * sin(angle), 1.0f));
@@ -191,16 +192,16 @@ void SceneBasic_Uniform::render()
     prog.setUniform("Material.Ka", vec3(0.2f * 0.3f, 0.55f * 0.3f, 0.9f * 0.3f));
     prog.setUniform("Material.Shininess", 180.0f);
 
-    //Teapot placing
-    /*float dist = 0.0f;
+    //obj placing
+    float dist = 0.0f;
     for (int i = 0; i < 5; i++) {
         model = mat4(1.0f);
         model = glm::translate(model, vec3(dist * 0.6f - 1.0f, 0.0f, -dist));
-        model = glm::rotate(model, glm::radians(-90.0f), vec3(1.0f, 0.0f, 0.0f));
+        //model = glm::rotate(model, glm::radians(-90.0f), vec3(1.0f, 0.0f, 0.0f));
         setMatrices();
-        cube.render();
+        ogre->render();
         dist += 2.0f;
-    }*/
+    }
 
 
 
@@ -210,7 +211,7 @@ void SceneBasic_Uniform::render()
     //model = glm::rotate(model, glm::radians(-90.0f), vec3(1.0f, 0.0f, 0.0f));
     setMatrices();
     //teapot.render();
-    ogre->render();
+    //ogre->render();
 
     /*prog.setUniform("Material.Kd", vec3(0.2f, 0.55f, 0.9f));
     prog.setUniform("Material.Ks", vec3(0.95f, 0.95f, 0.95f));

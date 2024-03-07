@@ -1,10 +1,10 @@
 #version 460
 
-//in vec3 Position;
-//in vec3 Normal;
+in vec3 Position;
+in vec3 Normal;
 in vec3 LightDir;
 in vec3 ViewDir;
-//flat in vec3 LightIntensity;
+flat in vec3 LightIntensity;
 in vec2 TexCoord;
 
 layout (binding = 0) uniform sampler2D ColorTex;
@@ -39,12 +39,13 @@ uniform struct FogInfo{
 //const int levels = 10;
 //const float scaleFactor = 1.0/levels;
 
-vec3 blinnPhong(vec3 n){
+vec3 blinnPhong(vec3 position, vec3 n){
     vec3 diffuse = vec3(0), spec=vec3(0);
 
     //Multi Texture
     vec3 texColor = texture(ColorTex, TexCoord).rgb;
 
+    //vec3 ambient = Light.La * Material.Ka;
     vec3 ambient = Light.La * texColor;
     //vec3 s = normalize(Light.Position.xyz - position);
     vec3 s = normalize(LightDir);
@@ -63,12 +64,15 @@ vec3 blinnPhong(vec3 n){
 
 void main() {
 
+    vec3 norm = texture(NormalMapTex, TexCoord).xyz;
+    norm.xy = 2.0 * norm.xy - 1.0;
+
     //Fog
-    /*float dist=abs(Position.z);
+    float dist=abs(Position.z);
     float fogFactor = (Fog.MaxDist - dist) / (Fog.MaxDist - Fog.MinDist);
     fogFactor = clamp(fogFactor, 0.0, 1.0);
-    vec3 shadeColor = blinnPhong(Position, normalize(Normal));
-    vec3 color = mix(Fog.Color, shadeColor, fogFactor);*/
+    //vec3 shadeColor = blinnPhong(Position, normalize(norm));
+    //vec3 color = mix(Fog.Color, shadeColor, fogFactor);
     
 
     //Alpha Discard
@@ -86,13 +90,14 @@ void main() {
         }
     }*/
 
-    vec3 norm = texture(NormalMapTex, TexCoord).xyz;
-    norm.xy = 2.0 * norm.xy - 1.0;
+    vec3 shadeColor = blinnPhong(Position, normalize(norm));
+    vec3 color = mix(Fog.Color, shadeColor, fogFactor);
 
     //Fog
-    //FragColor = vec4(color, 1.0);
+    FragColor = vec4(color, 1.0);
+
     //Normal
     //FragColor = vec4(blinnPhong(Position, normalize(Normal)), 1.0);
     //Normal Map
-    FragColor = vec4(blinnPhong(normalize(norm)), 1.0);
+    //FragColor = vec4(blinnPhong(normalize(norm)), 1.0);
 }
