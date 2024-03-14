@@ -21,14 +21,24 @@ out vec3 LightDir;
 out vec3 ViewDir;
 //flat out vec3 LightIntensity;
 out vec2 TexCoord;
+out vec3 Vec;
 
 uniform mat4 ModelViewMatrix;
 uniform mat3 NormalMatrix;
 uniform mat4 ProjectionMatrix;
 uniform mat4 MVP;
 
+//TrackCamera Position
+void GetCameraSpaceValues(out vec3 normal, out vec3 position)
+{
+	normal = normalize(NormalMatrix * VertexNormal);
+	position = (ModelViewMatrix * vec4(VertexPosition, 1.0)).xyz;
+}
+
 void main()
 {
+    Vec = VertexPosition;
+
     vec3 normal = normalize(NormalMatrix * VertexNormal);
     vec3 tangent = normalize(NormalMatrix * vec3(VertexTangent));
     vec3 binormal = normalize(cross(normal, tangent)) * VertexTangent.w;
@@ -40,6 +50,7 @@ void main()
         tangent.z, binormal.z, normal.z
     
     );
+
     //Old Light
     //TexCoord = VertexTexCoord;
     //Normal = normalize(NormalMatrix * VertexNormal);

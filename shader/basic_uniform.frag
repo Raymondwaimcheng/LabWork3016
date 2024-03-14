@@ -6,9 +6,12 @@ in vec3 LightDir;
 in vec3 ViewDir;
 flat in vec3 LightIntensity;
 in vec2 TexCoord;
+in vec3 Vec;
 
 layout (binding = 0) uniform sampler2D ColorTex;
 layout (binding = 1) uniform sampler2D NormalMapTex;
+layout (binding = 2) uniform samplerCube SkyBoxTex;
+
 layout (location = 0) out vec4 FragColor;
 
 uniform struct LightInfo{
@@ -53,17 +56,20 @@ vec3 blinnPhong(vec3 position, vec3 n){
     diffuse = texColor * sDotN;
 
     if(sDotN > 0.0){
-        //vec3 v = normalize(-position.xyz);
-        vec3 v = normalize(ViewDir);
+        vec3 v = normalize(-position.xyz);
+        //vec3 v = normalize(ViewDir);
         vec3 h = normalize(v + s);
         spec = Material.Ks * pow(max(dot(h, n), 0.0), Material.Shininess);
     }
 
-    return ambient +(diffuse + spec) * Light.L;
+    return ambient + (diffuse + spec) * Light.L;
 }
+
+
 
 void main() {
 
+    vec3 skyBoxTexColor = texture(SkyBoxTex, normalize(Vec)).rgb;
     vec3 norm = texture(NormalMapTex, TexCoord).xyz;
     norm.xy = 2.0 * norm.xy - 1.0;
 
@@ -71,30 +77,16 @@ void main() {
     float dist=abs(Position.z);
     float fogFactor = (Fog.MaxDist - dist) / (Fog.MaxDist - Fog.MinDist);
     fogFactor = clamp(fogFactor, 0.0, 1.0);
-    //vec3 shadeColor = blinnPhong(Position, normalize(norm));
-    //vec3 color = mix(Fog.Color, shadeColor, fogFactor);
-    
-
-    //Alpha Discard
-    /*vec4 alphaMap = texture(AlphaTex, TexCoord);
-
-    if(alphaMap.a < 0.15f){
-        discard;
-    }
-    else{
-        if(gl_FrontFacing){
-            FragColor = vec4(blinnPhong(Position, normalize(Normal)), 1.0);
-        }
-        else{
-            FragColor = vec4(blinnPhong(Position, normalize(-Normal)), 1.0);
-        }
-    }*/
-
     vec3 shadeColor = blinnPhong(Position, normalize(norm));
     vec3 color = mix(Fog.Color, shadeColor, fogFactor);
+    
 
-    //Fog
-    FragColor = vec4(color, 1.0);
+
+    //Fog + Skybox
+    FragColor = vec4(color, 1.0) + vec4(skyBoxTexColor, 1.0);
+
+    //SkyBox
+    //FragColor = vec4(texColor, 1.0);
 
     //Normal
     //FragColor = vec4(blinnPhong(Position, normalize(Normal)), 1.0);

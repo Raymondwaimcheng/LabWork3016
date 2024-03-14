@@ -13,15 +13,17 @@
 #include "helper/plane.h"
 #include "helper/objmesh.h"
 #include "helper/cube.h"
+#include "helper/skybox.h"
 
 
 class SceneBasic_Uniform : public Scene
 {
 private:
     //Torus torus;
-    //Plane plane;
+    Plane plane;
     Teapot teapot;
-    Cube cube;
+    //Cube cube;
+    SkyBox sky;
     float rotSpeed;
     //GLuint brick, moss;
     std::unique_ptr<ObjMesh> ogre;

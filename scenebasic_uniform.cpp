@@ -29,7 +29,8 @@ SceneBasic_Uniform::SceneBasic_Uniform() :
     tPrev(0),
     angle(0.0f),
     rotSpeed(glm::pi<float>()/ 8.0f),
-    //plane(50.0f, 50.0f, 1, 1),
+    plane(25.0f, 25.0f, 1, 1),
+    sky(100.0f),
     teapot(14, glm::mat4(1.0f))
   
     //torus(1.75f * 0.75f, 1.75f * 0.75f, 50, 50) 
@@ -41,8 +42,8 @@ void SceneBasic_Uniform::initScene()
 {
     compile();
     glEnable(GL_DEPTH_TEST);
-    model = mat4(1.0f);
-    view = glm::lookAt(vec3(1.0f, 1.25f, 1.25f), vec3(0.0f, 0.2f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+    vec3 cameraPos = vec3(0.0f, 1.25f, 3.0f);
+    view = glm::lookAt(cameraPos, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
     //rotation
     //model = glm::rotate(model, glm::radians(-35.0f), vec3(1.0f, 0.0f, 0.0f));
     //model = glm::rotate(model, glm::radians(15.0f), vec3(0.0f, 1.0f, 0.0f));
@@ -66,6 +67,7 @@ void SceneBasic_Uniform::initScene()
     prog.setUniform("Light.L", vec3(1.0f));
     prog.setUniform("Light.La", vec3(0.05f));
 
+    GLuint cubeTex = Texture::loadHdrCubeMap("media/texture/cube/pisa-hdr/pisa");
     GLuint diffTex = Texture::loadTexture("media/texture/ogre_diffuse.png");
     GLuint normalTex = Texture::loadTexture("media/texture/ogre_normalmap.png");
 
@@ -75,69 +77,13 @@ void SceneBasic_Uniform::initScene()
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, normalTex);
 
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, cubeTex);
+
     //Fog
     prog.setUniform("Fog.MaxDist", 10.0f);
     prog.setUniform("Fog.MinDist", 1.0f);
     prog.setUniform("Fog.Color", vec3(0.5f, 0.5f, 0.5f));
-
-    //prog.setUniform("Light.Exponent",50.0f);
-    //prog.setUniform("Light.Cutoff", glm::radians(15.0f));
-    /*prog.setUniform("lights[1].L", vec3(0.0f, 0.8f, 0.0f));
-    prog.setUniform("lights[2].L", vec3(0.8f, 0.0f, 0.0f));
-
-    prog.setUniform("lights[0].La", vec3(0.0f, 0.0f, 0.2f));
-    prog.setUniform("lights[1].La", vec3(0.0f, 0.2f, 0.0f));
-    prog.setUniform("lights[2].La", vec3(0.2f, 0.0f, 0.0f));*/
-
-    /*std::cout << std::endl;
-
-    prog.printActiveUniforms();
-
-    /////////////////// Create the VBO ////////////////////
-    float positionData[] = {
-        -0.8f, -0.8f, 0.0f,
-         0.8f, -0.8f, 0.0f,
-         0.0f,  0.8f, 0.0f };
-    float colorData[] = {
-        1.0f, 0.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 0.0f, 1.0f };
-
-    // Create and populate the buffer objects
-    GLuint vboHandles[2];
-    glGenBuffers(2, vboHandles);
-    GLuint positionBufferHandle = vboHandles[0];
-    GLuint colorBufferHandle = vboHandles[1];
-
-    glBindBuffer(GL_ARRAY_BUFFER, positionBufferHandle);
-    glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), positionData, GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ARRAY_BUFFER, colorBufferHandle);
-    glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), colorData, GL_STATIC_DRAW);
-
-    // Create and set-up the vertex array object
-    glGenVertexArrays( 1, &vaoHandle );
-    glBindVertexArray(vaoHandle);
-
-    glEnableVertexAttribArray(0);  // Vertex position
-    glEnableVertexAttribArray(1);  // Vertex color
-
-    #ifdef __APPLE__
-        glBindBuffer(GL_ARRAY_BUFFER, positionBufferHandle);
-        glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 0, (GLubyte *)NULL );
-
-        glBindBuffer(GL_ARRAY_BUFFER, colorBufferHandle);
-        glVertexAttribPointer( 1, 3, GL_FLOAT, GL_FALSE, 0, (GLubyte *)NULL );
-    #else
-    		glBindVertexBuffer(0, positionBufferHandle, 0, sizeof(GLfloat)*3);
-    		glBindVertexBuffer(1, colorBufferHandle, 0, sizeof(GLfloat)*3);
-
-    		glVertexAttribFormat(0, 3, GL_FLOAT, GL_FALSE, 0);
-    		glVertexAttribBinding(0, 0);
-    		glVertexAttribFormat(1, 3, GL_FLOAT, GL_FALSE, 0);
-    	  glVertexAttribBinding(1, 1);
-    #endif
-    glBindVertexArray(0);*/
 }
 
 void SceneBasic_Uniform::compile()
@@ -160,11 +106,15 @@ void SceneBasic_Uniform::update( float t )
     tPrev = t;
     angle += 0.1f * deltaT;
     
-    //if (angle > glm::two_pi<float>())angle -= glm::two_pi<float>();
     if (this->m_animate) {
         angle += rotSpeed * deltaT;
         if (angle > glm::two_pi<float>()) angle -= glm::two_pi<float>();
     }
+
+    //Skybox
+    /*if (angle > glm::two_pi<float>()) {
+        angle -= glm::two_pi<float>();
+    }*/
 }
 
 void SceneBasic_Uniform::render()
@@ -172,25 +122,21 @@ void SceneBasic_Uniform::render()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     //Light
-    //vec4 lightPos = vec4(10.0f * cos(angle), 10.0f, 10.0f * sin(angle), 1.0f);
-    //prog.setUniform("Light.Position", vec4(view * lightPos));
-
-    //Alpha Discard
-    //Spin
-    //vec3 cameraPos = vec3(-1.0f * cos(angle), 0.0f, 2.0f * sin(angle));
-    //Normal
-    vec3 cameraPos = vec3(0.0f, 0.25f, 2.0f);
-    view = glm::lookAt(cameraPos, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
-    prog.setUniform("Light.Position", view * glm::vec4(10.0f * cos(angle), 
-        1.0f, 10.0f * sin(angle), 1.0f));
-
-    //mat3 normalMatrix = mat3(vec3(view[0]), vec3(view[1]), vec3(view[2]));  
-    //prog.setUniform("Spot.Direction", normalMatrix * vec3(-lightPos));
+    vec4 lightPos = vec4(10.0f * cos(angle), 10.0f, 10.0f * sin(angle), 1.0f);
+    prog.setUniform("Light.Position", vec4(view * lightPos));
 
     prog.setUniform("Material.Kd", vec3(0.2f, 0.55f, 0.9f));
     prog.setUniform("Material.Ks", vec3(0.95f, 0.95f, 0.95f));
     prog.setUniform("Material.Ka", vec3(0.2f * 0.3f, 0.55f * 0.3f, 0.9f * 0.3f));
     prog.setUniform("Material.Shininess", 180.0f);
+
+    //SkyBox Placing
+    prog.use();
+    model = mat4(1.0f);
+    sky.render();
+
+    //plane.render();
+
 
     //obj placing
     float dist = 0.0f;
@@ -202,35 +148,6 @@ void SceneBasic_Uniform::render()
         ogre->render();
         dist += 2.0f;
     }
-
-
-
-
-    //Object Placing
-    model = mat4(1.0f);
-    //model = glm::rotate(model, glm::radians(-90.0f), vec3(1.0f, 0.0f, 0.0f));
-    setMatrices();
-    //teapot.render();
-    //ogre->render();
-
-    /*prog.setUniform("Material.Kd", vec3(0.2f, 0.55f, 0.9f));
-    prog.setUniform("Material.Ks", vec3(0.95f, 0.95f, 0.95f));
-    prog.setUniform("Material.Ka", vec3(0.2f * 0.3f, 0.55f * 0.3f, 0.9f * 0.3f));
-    prog.setUniform("Material.Shininess", 100.0f);
-
-    model = mat4(1.0f);
-    model = glm::translate(model, vec3(-1.0f, 0.75f, 3.0f));
-    model = glm::rotate(model, glm::radians(-90.0f), vec3(1.0f, 0.0f, 0.0f));
-    setMatrices();
-    torus.render();*/
-
-    /*prog.setUniform("Material.Kd", vec3(0.7f, 0.7f, 0.7f));
-    prog.setUniform("Material.Ks", vec3(0.0f, 0.0f, 0.0f));
-    prog.setUniform("Material.Ka", vec3(0.2f, 0.2f, 0.2f));
-    prog.setUniform("Material.Shininess", 180.0f);
-    model = mat4(1.0f);
-    setMatrices();
-    plane.render();*/
 }
 
 void SceneBasic_Uniform::resize(int w, int h)
