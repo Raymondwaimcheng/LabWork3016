@@ -35,14 +35,14 @@ SceneBasic_Uniform::SceneBasic_Uniform() :
   
     //torus(1.75f * 0.75f, 1.75f * 0.75f, 50, 50) 
     {
-    ogre = ObjMesh::load("media/bs_ears.obj", false, true);
+    cuby = ObjMesh::load("media/rock.obj", false, true);
 }
 
 void SceneBasic_Uniform::initScene()
 {
     compile();
     glEnable(GL_DEPTH_TEST);
-    vec3 cameraPos = vec3(0.0f, 1.25f, 3.0f);
+    vec3 cameraPos = vec3(0.0f, 0.25f, 3.0f);
     view = glm::lookAt(cameraPos, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
     //rotation
     //model = glm::rotate(model, glm::radians(-35.0f), vec3(1.0f, 0.0f, 0.0f));
@@ -68,8 +68,11 @@ void SceneBasic_Uniform::initScene()
     prog.setUniform("Light.La", vec3(0.05f));
 
     GLuint cubeTex = Texture::loadHdrCubeMap("media/texture/cube/pisa-hdr/pisa");
-    GLuint diffTex = Texture::loadTexture("media/texture/ogre_diffuse.png");
-    GLuint normalTex = Texture::loadTexture("media/texture/ogre_normalmap.png");
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, cubeTex);
+
+    GLuint diffTex = Texture::loadTexture("media/texture/stone_base.jpg");
+    GLuint normalTex = Texture::loadTexture("media/texture/stone_normal.jpg");
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, diffTex);
@@ -77,8 +80,7 @@ void SceneBasic_Uniform::initScene()
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, normalTex);
 
-    glActiveTexture(GL_TEXTURE2);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, cubeTex);
+   
 
     //Fog
     prog.setUniform("Fog.MaxDist", 10.0f);
@@ -145,7 +147,7 @@ void SceneBasic_Uniform::render()
         model = glm::translate(model, vec3(dist * 0.6f - 1.0f, 0.0f, -dist));
         //model = glm::rotate(model, glm::radians(-90.0f), vec3(1.0f, 0.0f, 0.0f));
         setMatrices();
-        ogre->render();
+        cuby->render();
         dist += 2.0f;
     }
 }

@@ -26,7 +26,7 @@ private:
     SkyBox sky;
     float rotSpeed;
     //GLuint brick, moss;
-    std::unique_ptr<ObjMesh> ogre;
+    std::unique_ptr<ObjMesh> cuby;
     float tPrev;
     float angle;
     GLSLProgram prog;
