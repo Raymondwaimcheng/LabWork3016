@@ -2,7 +2,7 @@
 
 #include <string>
 #include <sstream>
-#include <glm/glm.hpp>
+#include <glm/glm/glm.hpp>
 #include <limits>
 
 // Axis-aligned bounding box

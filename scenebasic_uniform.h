@@ -5,11 +5,11 @@
 
 #include <glad/glad.h>
 #include "helper/glslprogram.h"
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include <glm/glm/glm.hpp>
+#include <glm/glm/gtc/matrix_transform.hpp>
 #include "helper/torus.h"
 #include "helper/teapot.h"
-#include "glm/glm.hpp"
+#include "glm/glm/glm.hpp"
 #include "helper/plane.h"
 #include "helper/objmesh.h"
 #include "helper/cube.h"
