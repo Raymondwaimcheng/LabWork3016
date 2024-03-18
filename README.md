@@ -21,7 +21,7 @@ Fog is a visual technique
 * Backward: D
 
 ## Demo
-[https://www.youtube.com/watch?v=JX5A6sSk9WE](https://youtu.be/meFtA9O0jGU)
+[[https://www.youtube.com/watch?v=JX5A6sSk9WE](https://youtu.be/meFtA9O0jGU)](https://youtu.be/1o-oDDCkJ14)
 
 ## Path
 * Include Directories
