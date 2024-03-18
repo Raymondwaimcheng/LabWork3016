@@ -31,6 +31,9 @@ private:
     float angle;
     GLSLProgram prog;
     void setMatrices();
+    float x;
+    float y;
+    float z;
 
     glm::mat4 rotationMatrix;
 
@@ -43,6 +46,11 @@ public:
     void update( float t );
     void render();
     void resize(int, int);
+
+    void camUp();
+    void camDown();
+    void camRight();
+    void camLeft();
 };
 
 #endif // SCENEBASIC_UNIFORM_H

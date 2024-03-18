@@ -2,6 +2,8 @@
 #include "scene.h"
 #include <GLFW/glfw3.h>
 #include "glutils.h"
+#include <glm/glm/glm.hpp>
+#include <glm/glm/gtc/matrix_transform.hpp>
 
 #define WIN_WIDTH 800
 #define WIN_HEIGHT 600
@@ -10,6 +12,11 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+
+using glm::vec3;
+using glm::vec4;
+using glm::mat3;
+using glm::mat4;
 
 class SceneRunner {
 private:
@@ -82,7 +89,6 @@ public:
 			glDebugMessageInsert(GL_DEBUG_SOURCE_APPLICATION, GL_DEBUG_TYPE_MARKER, 1,
 				GL_DEBUG_SEVERITY_NOTIFICATION, -1, "End debug");
 #endif
-
 		// Close window and terminate GLFW
 		glfwTerminate();
 
@@ -128,6 +134,28 @@ private:
 			int state = glfwGetKey(window, GLFW_KEY_SPACE);
 			if (state == GLFW_PRESS)
 				scene.animate(!scene.animating());
+
+
+            //Input
+            if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+                scene.camUp();
+                //std::cout << "W";
+            }
+
+            if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+                scene.camDown();
+                //std::cout << "S";
+            }
+
+            if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+                scene.camRight();
+                //std::cout << "D";
+            }
+
+            if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+                scene.camLeft();
+                //std::cout << "A";
+            }
         }
     }
 };

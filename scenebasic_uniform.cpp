@@ -42,8 +42,8 @@ void SceneBasic_Uniform::initScene()
 {
     compile();
     glEnable(GL_DEPTH_TEST);
-    vec3 cameraPos = vec3(0.0f, 0.25f, 3.0f);
-    view = glm::lookAt(cameraPos, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+    //cameraPos = vec3(0.0f, 0.25f, 3.0f);
+    view = glm::lookAt(vec3(0.0f, 0.25f, 3.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 5.0f, 0.0f));
     //rotation
     //model = glm::rotate(model, glm::radians(-35.0f), vec3(1.0f, 0.0f, 0.0f));
     //model = glm::rotate(model, glm::radians(15.0f), vec3(0.0f, 1.0f, 0.0f));
@@ -83,8 +83,8 @@ void SceneBasic_Uniform::initScene()
    
 
     //Fog
-    prog.setUniform("Fog.MaxDist", 10.0f);
-    prog.setUniform("Fog.MinDist", 1.0f);
+    prog.setUniform("Fog.MaxDist", 7.0f);
+    prog.setUniform("Fog.MinDist", 5.0f);
     prog.setUniform("Fog.Color", vec3(0.5f, 0.5f, 0.5f));
 }
 
@@ -165,4 +165,24 @@ void SceneBasic_Uniform::setMatrices() {
     prog.setUniform("ModelViewMatrix", mv);
     prog.setUniform("NormalMatrix", glm::mat3(vec3(mv[0]), vec3(mv[1]), vec3(mv[2])));
     prog.setUniform("MVP", projection * mv);
+}
+
+void SceneBasic_Uniform::camUp() {
+    y += 0.001f;
+    view = glm::lookAt(vec3(0.0f + x, 0.25f + y, 3.0f + z), vec3(x, y, z), vec3(x, y, z));
+}
+
+void SceneBasic_Uniform::camDown() {
+    y -= 0.001f;
+    view = glm::lookAt(vec3(0.0f + x, 0.25f + y, 3.0f + z), vec3(x, y, z), vec3(x, y, z));
+}
+
+void SceneBasic_Uniform::camRight() {
+    z += 0.001f;
+    view = glm::lookAt(vec3(0.0f + x, 0.25f + y, 3.0f + z), vec3(x, y, z), vec3(x, y, z));
+}
+
+void SceneBasic_Uniform::camLeft() {
+    z -= 0.001f;
+    view = glm::lookAt(vec3(0.0f + x, 0.25f + y, 3.0f + z), vec3(x, y, z), vec3(x, y, z));
 }

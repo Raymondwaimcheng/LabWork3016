@@ -39,6 +39,11 @@ public:
       Called when screen is resized
       */
     virtual void resize(int, int) = 0;
+
+    virtual void camUp() = 0;
+    virtual void camDown() = 0;
+    virtual void camRight() = 0;
+    virtual void camLeft() = 0;
     
     void animate( bool value ) { m_animate = value; }
     bool animating() { return m_animate; }
