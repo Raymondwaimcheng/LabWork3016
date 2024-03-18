@@ -38,6 +38,7 @@ Keyboard Control the camera movement.<br />
 <br />
 Keyboard control is different in shading, I put my input tracker inside the mainloop of the scenerunner.h. <br />
 ![image](https://github.com/Raymondwaimcheng/MeteorInGalaxy_LabWork3016/assets/147705610/e96fc994-bab8-45c2-b7bd-1a5cd0ffc4cf) <br />
+
 So it can react to the user's input when the key is pressed. <br />
 
 
@@ -54,11 +55,11 @@ C:\Users\Public\OpenGL\lib <br />
   opengl32.lib <br />
 <br />
 * GLFW <br />
-#include <GLFW/glfw3.h> <br />
+#include<GLFW/glfw3.h> <br />
 * glm <br />
-#include <glm/glm/glm.hpp> <br />
+#include<glm/glm/glm.hpp> <br />
 * GLAD <br />
-#include <glad/glad.h> <br />
+#include<glad/glad.h> <br />
 
 ## System
 * Coding using Visual Studio 2022
