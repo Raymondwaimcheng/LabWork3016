@@ -8,6 +8,7 @@
 
 ## Skybox
 Skybox is the background image of the sky, creating a suitable background and making the scene look better.
+![image](https://github.com/Raymondwaimcheng/MeteorInGalaxy_LabWork3016/assets/147705610/0d5ac59e-1b8b-4060-9462-8978dca67989)
 
 ## Fog
 Fog is a visual technique
