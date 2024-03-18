@@ -28,7 +28,9 @@ Fog is a visual technique
 C:\Users\Public\OpenGL\include
 * Library Directories
 C:\Users\Public\OpenGL\lib
-* Linker- Additional Dependencies
+* Linker - Additional Dependencies
+  glfw3.lib
+  opengl32.lib
 * glfw3.lib
 * opengl32.lib
 
