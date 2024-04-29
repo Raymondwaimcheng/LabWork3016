@@ -4,6 +4,8 @@
 #include "helper/scene.h"
 
 #include <glad/glad.h>
+#include "helper/random.h"
+#include "helper/grid.h"
 #include "helper/glslprogram.h"
 #include <glm/glm/glm.hpp>
 #include <glm/glm/gtc/matrix_transform.hpp>
@@ -15,10 +17,14 @@
 #include "helper/cube.h"
 #include "helper/skybox.h"
 
+using namespace std;
+using namespace glm;
+
 
 class SceneBasic_Uniform : public Scene
 {
 private:
+    GLSLProgram prog;
     //Torus torus;
     Plane plane;
     Teapot teapot;
@@ -27,17 +33,35 @@ private:
     float rotSpeed;
     //GLuint brick, moss;
     std::unique_ptr<ObjMesh> cuby;
+
     float tPrev;
+    float lightAngle;
+    float lightRotationSpeed;
+    vec4 lightPos;
+
     float angle;
-    GLSLProgram prog;
-    void setMatrices();
+    float time;
     float x;
     float y;
     float z;
 
     glm::mat4 rotationMatrix;
 
+    GLSLProgram progFire;
+    Random random;
+    GLuint initVel, startTime, particles, nParticles;
+    Grid grid;
+    vec3 emitterPos, emitterDir;
+    float particleLifeTime;
+    void initBuffers();
+    float randFloat();
+
+    void setMatrices(GLSLProgram& prog);
     void compile();
+
+    void drawScene();
+    void drawFloor();
+    void drawSpot(const vec3& pos, float rough, int metal, const vec3& color);
 
 public:
     SceneBasic_Uniform();

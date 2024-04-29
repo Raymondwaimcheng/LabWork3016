@@ -2,6 +2,7 @@
 
 layout (location = 0) in vec3 VertexPosition;
 layout (location = 1) in vec3 VertexNormal;
+
 layout (location = 2) in vec2 VertexTexCoord;
 layout (location = 3) in vec4 VertexTangent;
 
@@ -17,6 +18,7 @@ uniform struct LightInfo{
 
 out vec3 Position;
 out vec3 Normal;
+
 out vec3 LightDir;
 out vec3 ViewDir;
 //flat out vec3 LightIntensity;
@@ -25,7 +27,7 @@ out vec3 Vec;
 
 uniform mat4 ModelViewMatrix;
 uniform mat3 NormalMatrix;
-uniform mat4 ProjectionMatrix;
+uniform mat4 projection;
 uniform mat4 MVP;
 
 //TrackCamera Position
@@ -37,6 +39,8 @@ void GetCameraSpaceValues(out vec3 normal, out vec3 position)
 
 void main()
 {
+    Normal = normalize(NormalMatrix * VertexNormal);
+    Position = (ModelViewMatrix * vec4(VertexPosition, 1.0)).xyz;
     Vec = VertexPosition;
 
     vec3 normal = normalize(NormalMatrix * VertexNormal);
@@ -50,11 +54,6 @@ void main()
         tangent.z, binormal.z, normal.z
     
     );
-
-    //Old Light
-    //TexCoord = VertexTexCoord;
-    //Normal = normalize(NormalMatrix * VertexNormal);
-    //Position = (ModelViewMatrix * vec4(VertexPosition, 1.0)).xyz;
 
     //New Map Light
     LightDir = toObjectLocal * (Light.Position.xyz - Position);
