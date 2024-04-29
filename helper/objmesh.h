@@ -5,7 +5,7 @@
 #include "aabb.h"
 
 #include <vector>
-#include <glm/glm/glm.hpp>
+#include <glm/glm.hpp>
 #include <string>
 #include <memory>
 

@@ -2,7 +2,7 @@
 #include <glad/glad.h>
 #include <cstdio>
 #include <cmath>
-#include <glm/glm/gtc/constants.hpp>
+#include <glm/gtc/constants.hpp>
 
 Torus::Torus(GLfloat outerRadius, GLfloat innerRadius, GLuint nsides, GLuint nrings)
 {

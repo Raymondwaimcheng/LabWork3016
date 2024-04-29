@@ -1,7 +1,7 @@
 #pragma once
 
 #include "trianglemesh.h"
-#include <glm/glm/glm.hpp>
+#include <glm/glm.hpp>
 
 class Teapot : public TriangleMesh
 {

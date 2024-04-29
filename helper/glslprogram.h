@@ -8,7 +8,7 @@
 
 #include <string>
 #include <map>
-#include <glm/glm/glm.hpp>
+#include <glm/glm.hpp>
 #include <stdexcept>
 
 class GLSLProgramException : public std::runtime_error {

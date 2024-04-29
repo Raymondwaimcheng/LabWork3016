@@ -16,8 +16,8 @@ using std::endl;
 #include "helper/texture.h"
 #include "helper/particleutils.h"
 #include <GLFW/glfw3.h>
-#include <glm/glm/glm.hpp>
-#include <glm/glm/gtc/matrix_transform.hpp>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 //End at Lab04 Part6
 
@@ -38,8 +38,8 @@ SceneBasic_Uniform::SceneBasic_Uniform() :
     
     particleLifeTime(5.5f),
     nParticles(8000.0f),
-    emitterPos(1, 0, 0),
-    emitterDir(-1, 2, 0)
+    emitterPos(1, 1, 0),
+    emitterDir(1, 2, 0)
     /*torus(1.75f * 0.75f, 1.75f * 0.75f, 50, 50)*/
 {
     cuby = ObjMesh::load("media/rock.obj", false, true);
@@ -85,7 +85,7 @@ void SceneBasic_Uniform::initScene()
     prog.use();
     prog.setUniform("Light.L", vec3(1.0f));
     prog.setUniform("Light.La", vec3(0.05f));
-    prog.setUniform("Color", vec4(0.4f, 0.4f, 0.4f, 1.0f));
+    //prog.setUniform("Color", vec4(0.4f, 0.4f, 0.4f, 1.0f));
 
     GLuint cubeTex = Texture::loadHdrCubeMap("media/texture/cube/pisa-hdr/pisa");
     glActiveTexture(GL_TEXTURE2);
@@ -105,6 +105,16 @@ void SceneBasic_Uniform::initScene()
     prog.setUniform("Fog.MaxDist", 7.0f);
     prog.setUniform("Fog.MinDist", 5.0f);
     prog.setUniform("Fog.Color", vec3(0.5f, 0.5f, 0.5f));
+
+    glActiveTexture(GL_TEXTURE4);
+    Texture::loadTexture("media/texture/fire.png");
+    progFire.use();
+    progFire.setUniform("ParticleTexture", 0);
+    progFire.setUniform("ParticleLifeTime", particleLifeTime);
+    progFire.setUniform("ParticleSize", 2.5f);
+    progFire.setUniform("ParticleGravity", vec3(0.0f, -0.2f, 0.0f));
+    progFire.setUniform("EmitterPos", emitterPos);
+    progFire.setUniform("Color", vec4(0.4f, 0.4f, 0.4f, 1.0f));
 }
 
 void SceneBasic_Uniform::initBuffers() {
@@ -213,7 +223,7 @@ void SceneBasic_Uniform::drawFloor()
     prog.setUniform("PBRMaterial.Color", vec3(0.2f));
 
     model = mat4(1.0f);
-    model = translate(model, vec3(0.0f, -0.75f, 0.0f));
+    model = translate(model, vec3(0.0f, -1.75f, 0.0f));
     setMatrices(prog);
     plane.render();
 }
@@ -271,13 +281,16 @@ void SceneBasic_Uniform::render()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+
+
     //PBR
     prog.setUniform("PBRLight[0].Position", view * lightPos);
     drawScene();
 
-    /*progFire.use();
+    progFire.use();
     setMatrices(progFire);
     grid.render();
+
 
     glDepthMask(GL_FALSE);
     progFire.use();
@@ -287,7 +300,7 @@ void SceneBasic_Uniform::render()
     glDrawArraysInstanced(GL_TRIANGLES, 0, 6, nParticles);
     glBindVertexArray(0);
     glDepthMask(GL_TRUE);
-    glFinish();*/
+    glFinish();
     
     //Light
     /*vec4 lightPos = vec4(10.0f * cos(angle), 10.0f, 10.0f * sin(angle), 1.0f);
@@ -350,21 +363,21 @@ void SceneBasic_Uniform::setMatrices(GLSLProgram& prog) {
 }
 
 void SceneBasic_Uniform::camUp() {
-    y += 0.001f;
+    y += 0.1f;
     view = glm::lookAt(vec3(0.0f + x, 0.25f + y, 3.0f + z), vec3(x, y, z), vec3(x, y, z));
 }
 
 void SceneBasic_Uniform::camDown() {
-    y -= 0.001f;
+    y -= 0.1f;
     view = glm::lookAt(vec3(0.0f + x, 0.25f + y, 3.0f + z), vec3(x, y, z), vec3(x, y, z));
 }
 
 void SceneBasic_Uniform::camRight() {
-    z += 0.001f;
+    z += 0.1f;
     view = glm::lookAt(vec3(0.0f + x, 0.25f + y, 3.0f + z), vec3(x, y, z), vec3(x, y, z));
 }
 
 void SceneBasic_Uniform::camLeft() {
-    z -= 0.001f;
+    z -= 0.1f;
     view = glm::lookAt(vec3(0.0f + x, 0.25f + y, 3.0f + z), vec3(x, y, z), vec3(x, y, z));
 }

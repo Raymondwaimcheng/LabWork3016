@@ -14,8 +14,6 @@ uniform float ParticleSize = 1.0;
 uniform vec3 EmitterPos;
 
 uniform mat4 ModelViewMatrix; //MV
-uniform mat3 NormalMatrix;
-uniform mat4 MVP;
 uniform mat4 projection;
 
 const vec3 offsets[] = vec3[](vec3(-0.5, -0.5, 0), vec3(0.5, -0.5, 0), vec3(0.5, 0.5, 0), vec3(-0.5, -0.5, 0), vec3(0.5, 0.5, 0), vec3(-0.5, 0.5, 0));
@@ -40,5 +38,5 @@ void main(){
 	}
 
 	ParticleTexCoord = texCoords[gl_VertexID];
-	gl_Position = MVP * vec4(cameraPos, 1);
+	gl_Position = projection * vec4(cameraPos, 1);
 }

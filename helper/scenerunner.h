@@ -2,8 +2,8 @@
 #include "scene.h"
 #include <GLFW/glfw3.h>
 #include "glutils.h"
-#include <glm/glm/glm.hpp>
-#include <glm/glm/gtc/matrix_transform.hpp>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #define WIN_WIDTH 800
 #define WIN_HEIGHT 600
