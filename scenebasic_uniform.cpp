@@ -85,7 +85,7 @@ void SceneBasic_Uniform::initScene()
     prog.use();
     prog.setUniform("Light.L", vec3(1.0f));
     prog.setUniform("Light.La", vec3(0.05f));
-    //prog.setUniform("Color", vec4(0.4f, 0.4f, 0.4f, 1.0f));
+    prog.setUniform("Color", vec4(0.4f, 0.4f, 0.4f, 1.0f));
 
     GLuint cubeTex = Texture::loadHdrCubeMap("media/texture/cube/pisa-hdr/pisa");
     glActiveTexture(GL_TEXTURE2);
@@ -204,7 +204,7 @@ void SceneBasic_Uniform::compile()
 
 void SceneBasic_Uniform::drawScene()
 {
-    drawFloor();
+    //drawFloor();
 
     int numObj = 9;
     vec3 objBaseColor(0.15f, 0.15f, 0.15f);
@@ -318,15 +318,15 @@ void SceneBasic_Uniform::render()
 
     //plane.render();
     //obj placing
-    float dist = 0.0f;
-    for (int i = 0; i < 5; i++) {
-        model = mat4(1.0f);
-        model = glm::translate(model, vec3(dist * 0.6f - 1.0f, 0.0f, -dist));
-        //model = glm::rotate(model, glm::radians(-90.0f), vec3(1.0f, 0.0f, 0.0f));
-        setMatrices(prog);
-        cuby->render();
-        dist += 2.0f;
-    }
+    //float dist = 0.0f;
+    //for (int i = 0; i < 5; i++) {
+    //    model = mat4(1.0f);
+    //    model = glm::translate(model, vec3(dist * 0.6f - 1.0f, 0.0f, -dist));
+    //    //model = glm::rotate(model, glm::radians(-90.0f), vec3(1.0f, 0.0f, 0.0f));
+    //    setMatrices(prog);
+    //    cuby->render();
+    //    dist += 2.0f;
+    //}
 
 
     //Fire
@@ -363,21 +363,21 @@ void SceneBasic_Uniform::setMatrices(GLSLProgram& prog) {
 }
 
 void SceneBasic_Uniform::camUp() {
-    y += 0.1f;
+    y += 0.01f;
     view = glm::lookAt(vec3(0.0f + x, 0.25f + y, 3.0f + z), vec3(x, y, z), vec3(x, y, z));
 }
 
 void SceneBasic_Uniform::camDown() {
-    y -= 0.1f;
+    y -= 0.01f;
     view = glm::lookAt(vec3(0.0f + x, 0.25f + y, 3.0f + z), vec3(x, y, z), vec3(x, y, z));
 }
 
 void SceneBasic_Uniform::camRight() {
-    z += 0.1f;
+    z += 0.01f;
     view = glm::lookAt(vec3(0.0f + x, 0.25f + y, 3.0f + z), vec3(x, y, z), vec3(x, y, z));
 }
 
 void SceneBasic_Uniform::camLeft() {
-    z -= 0.1f;
+    z -= 0.01f;
     view = glm::lookAt(vec3(0.0f + x, 0.25f + y, 3.0f + z), vec3(x, y, z), vec3(x, y, z));
 }

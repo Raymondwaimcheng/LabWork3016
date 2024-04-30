@@ -69,7 +69,7 @@
     <ClCompile Include="helper\grid.cpp">
       <Filter>helper</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Public\OpenGL\lib\src\glad.c">
+    <ClCompile Include="C:\Users\rayray\OpenGL\lib\src\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
