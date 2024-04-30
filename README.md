@@ -5,6 +5,7 @@
   My goal is to create a galaxy-themed meteor viewer.<br />
   Adding keyboard control for the user to control the camera when the program is running.<br />
   The goal is to make a skybox, a fog system, texture on objects, custom 3D objects, and lighting.<br />
+  CW2 implements PBR and Particle Fountain. <br />
 
 ## BlinnPhong
 BlinnPhong is a reflection model, having a higher speed than the normal Phong model, it is useful for lighting reflection, since we're making the shader look better with it. <br />
@@ -29,6 +30,14 @@ Using multiple vert and frag shader files is better, for different texture displ
 ![image](https://github.com/Raymondwaimcheng/MeteorInGalaxy_LabWork3016/assets/147705610/d8b42d8b-d7fb-417b-94e2-a3b87fc7525c) <br />
 Make sure the file is compiled inside compile(). <br />
 
+## PBR
+![image](https://github.com/Raymondwaimcheng/MeteorInGalaxy_LabWork3016/assets/147705610/bb0809e8-c085-4206-b44a-2b3e1d528b1c) <br />
+PBR rending images in a way that models the lights and surfaces with optics in the real world, it's more realistic compare normal lighting method <br />
+A new set of Lightinfo and Materialinfo is used to give the meteor a PBR shader, it managed to work with the normal map shader we have in CW1
+
+## Particle Fountain
+A second set of shader of basic_fire.vert and basic_fir.frag is used to holding the shading code of the particle, algorithm calculation is made in the .ccp file with initBuffer() <br />
+
 ## Control
 Keyboard Control the camera movement.<br />
 * Up:       W
@@ -43,7 +52,9 @@ So it can react to the user's input when the key is pressed. <br />
 
 
 ## Demo
-[[[https://www.youtube.com/watch?v=JX5A6sSk9WE](https://youtu.be/meFtA9O0jGU)](https://youtu.be/1o-oDDCkJ14)](https://youtu.be/1o-oDDCkJ14)
+CW1: [[[https://www.youtube.com/watch?v=JX5A6sSk9WE](https://youtu.be/meFtA9O0jGU)](https://youtu.be/1o-oDDCkJ14)](https://youtu.be/1o-oDDCkJ14)
+
+CW2: https://youtu.be/D-Fyegas-Cg
 
 ## Path
 * Include Directories <br />
@@ -57,7 +68,7 @@ C:\Users\Public\OpenGL\lib <br />
 * GLFW <br />
 #include<GLFW/glfw3.h> <br />
 * glm <br />
-#include<glm/glm/glm.hpp> <br />
+#include<glm/glm.hpp> <br />
 * GLAD <br />
 #include<glad/glad.h> <br />
 
